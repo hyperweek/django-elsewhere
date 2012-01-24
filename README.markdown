@@ -1,3 +1,7 @@
+_Friendly fork to update to Django 1.3._
+
+***
+
 django-elsewhere - Social Network Links for Django
 ===================================
 
