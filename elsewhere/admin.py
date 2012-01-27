@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from models import *
+from models import (SocialNetworkProfile, WebsiteProfile,
+        InstantMessengerProfile)
+
 
 class ProfileAdmin(admin.ModelAdmin):
     raw_id_fields = ['user']
