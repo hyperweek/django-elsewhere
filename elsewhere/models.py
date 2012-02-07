@@ -3,7 +3,6 @@ from datetime import datetime
 from django import forms
 from django.db import models
 from django.core.cache import cache
-from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
@@ -28,6 +27,7 @@ class Network(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class SocialNetwork(Network):
     class Meta:
         verbose_name_plural = 'social networks'
@@ -35,6 +35,7 @@ class SocialNetwork(Network):
     def save(self, *args, **kwargs):
         cache.delete(SN_CACHE_KEY)
         super(SocialNetwork, self).save(*args, **kwargs)
+
 
 class InstantMessenger(Network):
     class Meta:
@@ -44,8 +45,8 @@ class InstantMessenger(Network):
         cache.delete(IM_CACHE_KEY)
         super(InstantMessenger, self).save(*args, **kwargs)
 
-# the following makes the social / IM networks data act as lists.
 
+# the following makes the social / IM networks data act as lists.
 def SocialNetworkData():
     cache_key = SN_CACHE_KEY
     data = cache.get(cache_key)
@@ -62,12 +63,13 @@ def SocialNetworkData():
                     'identifier': network.identifier,
                     'icon': network.icon
                 })
-            cache.set(cache_key, data, 60*60*24)
+            cache.set(cache_key, data, 60 * 60 * 24)
         except:
             # if we haven't yet synced the database, don't worry about this yet
             pass
 
     return data
+
 
 def InstantMessengerData():
     cache_key = IM_CACHE_KEY
@@ -83,12 +85,13 @@ def InstantMessengerData():
                     'url': network.url,
                     'icon': network.icon
                 })
-            cache.set(cache_key, data, 60*60*24)
+            cache.set(cache_key, data, 60 * 60 * 24)
         except:
             # if we haven't yet synced the database, don't worry about this yet
             pass
 
     return data
+
 
 class ProfileManager:
     """ Handle raw data for lists of profiles."""
@@ -99,13 +102,16 @@ class ProfileManager:
         return [(props['id'], props['name']) for props in self.data]
     choices = property(_get_choices)
 
+
 class SocialNetworkManager(ProfileManager):
     data = SocialNetworkData()
 sn_manager = SocialNetworkManager()
 
+
 class InstantMessengerManager(ProfileManager):
     data = InstantMessengerData()
 im_manager = InstantMessengerManager()
+
 
 class Profile(models.Model):
     """ Common profile model pieces. """
@@ -130,17 +136,17 @@ class Profile(models.Model):
         # Profile display name
         return self.data_item['name']
     name = property(_get_name)
- 
+
     def _get_url(self):
         # Profile URL with username
         return self.data_item['url'] % self.username
     url = property(_get_url)
-    
+
     def _get_icon_name(self):
         # Icon name
         return self.data_item['icon']
     icon_name = property(_get_icon_name)
- 
+
     def _get_icon(self):
         # Icon URL or link to Google icon service
         if self.icon_name:
@@ -150,15 +156,17 @@ class Profile(models.Model):
         return GOOGLE_PROFILE_URL % self.url
     icon = property(_get_icon)
 
+
 class SocialNetworkProfile(Profile):
     data_manager = sn_manager
 
     user = models.ForeignKey(User, db_index=True, related_name='social_network_profiles')
     network_id = models.CharField(max_length=16, choices=data_manager.choices, db_index=True)
     username = models.CharField(max_length=64)
-    
+
     def __unicode__(self):
         return self.network_id
+
 
 class SocialNetworkForm(forms.ModelForm):
 
@@ -176,6 +184,7 @@ class InstantMessengerProfile(Profile):
 
     def __unicode__(self):
         return self.username
+
 
 class InstantMessengerForm(forms.ModelForm):
 
