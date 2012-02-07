@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
+from django.http import HttpResponseRedirect, HttpResponseServerError
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
@@ -7,7 +7,7 @@ from elsewhere.models import *
 
 
 @login_required
-def example(request):
+def elsewhere(request):
     if request.method == 'POST':
 
         new_data = request.POST.copy()

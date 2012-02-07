@@ -1,5 +1,5 @@
-from django.conf.urls.defaults import patterns
+from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('elsewhere.views',
-    (r'^$', 'example'),
+    url(r'^$', 'elsewhere', name='elsewhere'),
 )
