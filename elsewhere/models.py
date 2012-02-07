@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from django import forms
 from django.db import models
 from django.core.cache import cache
 from django.contrib.auth.models import User
@@ -168,13 +167,6 @@ class SocialNetworkProfile(Profile):
         return self.network_id
 
 
-class SocialNetworkForm(forms.ModelForm):
-
-    class Meta:
-        model = SocialNetworkProfile
-        fields = ('network_id', 'username')
-
-
 class InstantMessengerProfile(Profile):
     data_manager = im_manager
 
@@ -184,13 +176,6 @@ class InstantMessengerProfile(Profile):
 
     def __unicode__(self):
         return self.username
-
-
-class InstantMessengerForm(forms.ModelForm):
-
-    class Meta:
-        model = InstantMessengerProfile
-        fields = ('network_id', 'username')
 
 
 class WebsiteProfile(models.Model):
@@ -205,10 +190,3 @@ class WebsiteProfile(models.Model):
         # No known icons! Just return the Google service URL.
         return GOOGLE_PROFILE_URL % self.url
     icon = property(_get_icon)
-
-
-class WebsiteForm(forms.ModelForm):
-
-    class Meta:
-        model = WebsiteProfile
-        fields = ('name', 'url')

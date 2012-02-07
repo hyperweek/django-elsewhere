@@ -3,14 +3,13 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 
-from elsewhere.models import *
+from elsewhere.forms import SocialNetworkForm, InstantMessengerForm, WebsiteForm
 
 
 @login_required
 def elsewhere(request, template_name='elsewhere/example.html',
     extra_context=None, **kwargs):
     if request.method == 'POST':
-
         new_data = request.POST.copy()
 
         # Add forms
