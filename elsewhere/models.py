@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db import models
+from django.conf import settings
 from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
@@ -149,9 +150,7 @@ class Profile(models.Model):
     def _get_icon(self):
         # Icon URL or link to Google icon service
         if self.icon_name:
-            print reverse('elsewhere_img', args=[self.icon_name])
-            print self.icon_name
-            return reverse('elsewhere_img', args=[self.icon_name])
+            return "%selsewhere/%s" % (settings.STATIC_URL, self.icon_name)
         return GOOGLE_PROFILE_URL % self.url
     icon = property(_get_icon)
 
