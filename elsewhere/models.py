@@ -6,7 +6,6 @@ from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
-from django.core.urlresolvers import reverse
 
 GOOGLE_PROFILE_URL = 'http://www.google.com/s2/favicons?domain_url=%s'
 SN_CACHE_KEY = 'elsewhere_sn_data'
