@@ -7,7 +7,8 @@ from elsewhere.models import *
 
 
 @login_required
-def elsewhere(request):
+def elsewhere(request, template_name='elsewhere/example.html',
+    extra_context=None, **kwargs):
     if request.method == 'POST':
 
         new_data = request.POST.copy()
@@ -53,6 +54,14 @@ def elsewhere(request):
     im_form = InstantMessengerForm()
     w_form = WebsiteForm()
 
-    return render_to_response('elsewhere/example.html', {
-        'sn_form': sn_form, 'im_form': im_form, 'w_form': w_form,
-    }, context_instance=RequestContext(request))
+    context = {
+        'sn_form': sn_form,
+        'im_form': im_form,
+        'w_form': w_form,
+    }
+
+    if extra_context is not None:
+        context.update(extra_context)
+
+    return render_to_response(template_name, context,
+        context_instance=RequestContext(request))
