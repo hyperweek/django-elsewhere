@@ -156,7 +156,7 @@ default_social_networks = [
     {
         'name': 'LinkedIn',
         'url': 'http://www.linkedin.com/profile/view?id=%s',
-        'identifier': 'Full Name (without spaces)',
+        'identifier': 'User ID',
         'icon': 'linkedin.png',
         'network_type': 'sn'
     },
